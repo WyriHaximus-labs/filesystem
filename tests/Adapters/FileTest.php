@@ -229,8 +229,8 @@ class FileTest extends AbstractAdaptersTest
             usleep(500);
             $this->checkIfTimedOut();
         } while (!file_exists($tempFile));
-        $this->await($filesystem->file($tempFile)->chown(1000), $loop);
-        $this->assertSame(1000, fileowner($tempFile));
+        $this->await($filesystem->file($tempFile)->chown(1), $loop);
+        $this->assertSame(1, fileowner($tempFile));
     }
 
     /**
