@@ -102,6 +102,9 @@ trait ReadableStreamTrait
                 $this->emit('end', [
                     $this,
                 ]);
+                $this->emit('close', [
+                    $this,
+                ]);
             }
         });
     }
