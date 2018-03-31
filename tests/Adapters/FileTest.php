@@ -117,7 +117,7 @@ class FileTest extends AbstractAdaptersTest
         $this->assertFileNotExists($tempFile);
         $this->await($filesystem->file($tempFile)->create(), $loop);
         $this->assertFileExists($tempFile);
-        $this->assertSame('0760', substr(sprintf('%o', fileperms($tempFile)), -4));
+        $this->assertSame(substr(sprintf('%o', fileperms(dirname($dir))), -4), substr(sprintf('%o', fileperms($dir)), -4));
     }
 
     /**
