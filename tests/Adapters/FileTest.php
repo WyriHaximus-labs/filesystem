@@ -135,15 +135,8 @@ class FileTest extends AbstractAdaptersTest
      */
     public function testGetContents(LoopInterface $loop, FilesystemInterface $filesystem)
     {
-        $tempFile = $this->tmpDir . uniqid('', true);
-        $contents = str_pad('a', 1024*512);
-        file_put_contents($tempFile, $contents);
-        do {
-            usleep(500);
-            $this->checkIfTimedOut();
-        } while (!file_exists($tempFile));
-        $this->assertTrue(file_exists($tempFile));
-        $fileContents = $this->await($filesystem->file($tempFile)->getContents(), $loop);
+        $contents = file_get_contents(__FILE__);
+        $fileContents = $this->await($filesystem->file(__FILE__)->getContents(), $loop);
         $this->assertSame($contents, $fileContents);
     }
 
