@@ -90,7 +90,7 @@ class FileTest extends AbstractAdaptersTest
             $rejectionReason = $e->getMessage();
         }
 
-        $this->assertEquals("Path doesn't exist", $rejectionReason);
+        $this->assertEquals('No such file or directory', $rejectionReason);
     }
 
     /**
