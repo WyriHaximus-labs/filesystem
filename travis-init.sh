@@ -47,5 +47,3 @@ fi
 
 #fi
 
-
-composer self-update
