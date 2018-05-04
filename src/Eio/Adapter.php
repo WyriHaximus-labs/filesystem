@@ -424,9 +424,7 @@ class Adapter implements AdapterInterface
         $this->active = true;
         $this->loop->addReadStream($this->fd, [$this, 'handleEvent']);
         $this->pollTimer = $this->loop->addPeriodicTimer(0.1, function () {
-            while (eio_npending()) {
-                eio_poll();
-            }
+            eio_poll();
         });
     }
 
