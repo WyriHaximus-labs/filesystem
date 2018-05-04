@@ -34,6 +34,8 @@ class Adapter implements AdapterInterface
      */
     protected $loop;
 
+    protected $pollTimer;
+
     /**
      * @var OpenFlagResolver
      */
@@ -421,6 +423,11 @@ class Adapter implements AdapterInterface
 
         $this->active = true;
         $this->loop->addReadStream($this->fd, [$this, 'handleEvent']);
+        $this->pollTimer = $this->loop->addPeriodicTimer(0.1, function () {
+            while (eio_npending()) {
+                eio_poll();
+            }
+        });
     }
 
     protected function unregister()
@@ -431,6 +438,7 @@ class Adapter implements AdapterInterface
 
         $this->active = false;
         $this->loop->removeReadStream($this->fd, [$this, 'handleEvent']);
+        $this->loop->cancelTimer($this->pollTimer);
     }
 
     public function handleEvent()
