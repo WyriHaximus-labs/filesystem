@@ -1,7 +1,7 @@
 #!/bin/bash
 
-sudo mkdir `php -r "echo sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'react-filesystem-tests' . DIRECTORY_SEPARATOR;"`
-sudo chmod 0777 -Rfv `php -r "echo sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'react-filesystem-tests' . DIRECTORY_SEPARATOR;"`
+mkdir `php -r "echo sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'react-filesystem-tests' . DIRECTORY_SEPARATOR;"`
+chmod 0777 -Rfv `php -r "echo sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'react-filesystem-tests' . DIRECTORY_SEPARATOR;"`
 
 if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then
     # install 'eio' PHP extension (does not support php 7)
