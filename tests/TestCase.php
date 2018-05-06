@@ -61,7 +61,6 @@ class TestCase extends PHPUnitTestCase
     {
         $this->tmpDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'react-filesystem-tests' . DIRECTORY_SEPARATOR . uniqid('', true) . DIRECTORY_SEPARATOR;
         mkdir($this->tmpDir, 0777, true);
-        sleep(10);
         $this->startTime = time();
     }
 
