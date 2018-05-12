@@ -18,4 +18,5 @@ install:
 
 script:
   - ./vendor/bin/phpunit --coverage-text --exclude-group permissions
-  - sudo ./vendor/bin/phpunit --coverage-text --group permissions
+  - export phploc=~/.phpenv/versions/$(phpenv version-name)/bin/php
+  - sudo $phploc ./vendor/bin/phpunit --coverage-text --group permissions
