@@ -3,14 +3,13 @@
 mkdir `php -r "echo sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'react-filesystem-tests' . DIRECTORY_SEPARATOR;"`
 chmod 0777 -Rfv `php -r "echo sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'react-filesystem-tests' . DIRECTORY_SEPARATOR;"`
 
-if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then
+#if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then
     # install 'eio' PHP extension (does not support php 7)
-    if [[ "$TRAVIS_PHP_VERSION" != "7.0" ]]; then
+#    if [[ "$TRAVIS_PHP_VERSION" != "7.0" ]]; then
 #        yes "" | pecl install eio
 #        echo "extension=eio.so" >> "$(php -r 'echo php_ini_loaded_file();')"
-    fi
-
-fi
+#    fi
+#fi
 
 #set -e
 #set -o pipefail
