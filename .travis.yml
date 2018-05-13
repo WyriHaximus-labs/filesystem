@@ -17,6 +17,6 @@ install:
   - composer install -n
 
 script:
-  - ./vendor/bin/phpunit --coverage-text --exclude-group permissions
+  - ./vendor/bin/phpunit --exclude-group permissions
   - export phploc=~/.phpenv/versions/$(phpenv version-name)/bin/php
-  - sudo $phploc ./vendor/bin/phpunit --coverage-text --group permissions
+  - sudo $phploc ./vendor/bin/phpunit --group permissions
