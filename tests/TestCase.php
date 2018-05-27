@@ -107,12 +107,6 @@ class TestCase extends PHPUnitTestCase
 
     protected function await(PromiseInterface $promise, LoopInterface $loop, $timeout = self::TIMEOUT)
     {
-        $result = Block\await($promise, $loop, $timeout);
-        $loop->addTimer(5, function () use ($loop) {
-            // Force loop to stop, it has taken long enough
-            $loop->stop();
-        });
-        $loop->run(); // Ensure we let the loop run it's course to clean up
-        return $result;
+        return Block\await($promise, $loop, $timeout);
     }
 }
