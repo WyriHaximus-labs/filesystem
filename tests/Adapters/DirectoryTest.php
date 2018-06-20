@@ -70,7 +70,13 @@ class DirectoryTest extends AbstractAdaptersTest
         $dir = $this->tmpDir . 'path';
         $this->await($filesystem->dir($dir)->createRecursive(), $loop);
         $this->assertFileExists($dir);
-        $this->assertSame('0760', substr(sprintf('%o', fileperms($dir)), -4));
+        $this->assertSame(
+            sprintf('%o',  ((new PermissionFlagResolver())->resolve(AdapterInterface::CREATION_MODE) & ~umask())),
+            substr(
+                sprintf('%o', fileperms($dir)),
+                -3
+            )
+        );
     }
 
     /**

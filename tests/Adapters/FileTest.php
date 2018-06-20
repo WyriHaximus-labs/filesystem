@@ -3,9 +3,11 @@
 namespace React\Tests\Filesystem\Adapters;
 
 use React\EventLoop\LoopInterface;
+use React\Filesystem\AdapterInterface;
 use React\Filesystem\ChildProcess;
 use React\Filesystem\Eio;
 use React\Filesystem\FilesystemInterface;
+use React\Filesystem\PermissionFlagResolver;
 use React\Filesystem\Pthreads;
 
 /**
@@ -120,7 +122,13 @@ class FileTest extends AbstractAdaptersTest
         $this->assertFileNotExists($tempFile);
         $this->await($filesystem->file($tempFile)->create(), $loop);
         $this->assertFileExists($tempFile);
-        $this->assertSame('0760', substr(sprintf('%o', fileperms($tempFile)), -4));
+        $this->assertSame(
+            sprintf('%o',  ((new PermissionFlagResolver())->resolve(AdapterInterface::CREATION_MODE) & ~umask())),
+            substr(
+                sprintf('%o', fileperms($tempFile)),
+                -3
+            )
+        );
     }
 
     /**
