@@ -6,6 +6,7 @@ use React\EventLoop\LoopInterface;
 use React\Filesystem\ChildProcess;
 use React\Filesystem\Eio;
 use React\Filesystem\FilesystemInterface;
+use React\Filesystem\PermissionFlagResolver;
 use React\Filesystem\Pthreads;
 
 /**
