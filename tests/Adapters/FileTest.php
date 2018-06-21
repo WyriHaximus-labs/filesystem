@@ -122,8 +122,10 @@ class FileTest extends AbstractAdaptersTest
         $this->assertFileNotExists($tempFile);
         $this->await($filesystem->file($tempFile)->create(), $loop);
         $this->assertFileExists($tempFile);
+        $defaultCreationMode = (new PermissionFlagResolver())->resolve(AdapterInterface::CREATION_MODE);
+        $umask = umask();
         $this->assertSame(
-            sprintf('%o',  ((new PermissionFlagResolver())->resolve(AdapterInterface::CREATION_MODE) & ~umask())),
+            sprintf('%o',  ($defaultCreationMode & ~$umask)),
             substr(
                 sprintf('%o', fileperms($tempFile)),
                 -3
