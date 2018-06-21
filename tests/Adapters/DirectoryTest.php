@@ -64,16 +64,13 @@ class DirectoryTest extends AbstractAdaptersTest
         ], $size);
     }
 
-    public function testUmask()
-    {
-        $this->assertSame(sprintf('%o',0777), sprintf('%o',umask()));
-    }
-
     /**
      * @dataProvider filesystemProvider
      */
     public function testCreate(LoopInterface $loop, FilesystemInterface $filesystem)
     {
+        $defaultCreationMode = (new PermissionFlagResolver())->resolve(AdapterInterface::CREATION_MODE);
+        $umask = umask();
         $dir = $this->tmpDir . 'path';
         $this->await($filesystem->dir($dir)->createRecursive(), $loop);
         $this->assertFileExists($dir);
