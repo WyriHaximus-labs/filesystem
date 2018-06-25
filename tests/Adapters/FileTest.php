@@ -119,8 +119,8 @@ class FileTest extends AbstractAdaptersTest
     public function testCreate(LoopInterface $loop, FilesystemInterface $filesystem)
     {
         $defaultCreationMode = (new PermissionFlagResolver())->resolve(AdapterInterface::CREATION_MODE);
-        $umask = umask();
         $tempFile = $this->tmpDir . uniqid('', true);
+        $umask = fileperms(dirname($tempFile));
         $this->assertFileNotExists($tempFile);
         $this->await($filesystem->file($tempFile)->create(), $loop);
         $this->assertFileExists($tempFile);
