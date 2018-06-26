@@ -147,6 +147,10 @@ trait WoolTrait
      */
     public function open(array $payload)
     {
+        if (!file_exists($payload['path'])) {
+            touch($payload['path']);
+            chmod($payload['path'], octdec($payload['mode']));
+        }
         $this->fd = @fopen($payload['path'], $payload['flags']);
         return \React\Promise\resolve([
             'result' => (string)$this->fd,
