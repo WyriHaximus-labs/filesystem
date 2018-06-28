@@ -176,7 +176,7 @@ class Adapter extends AbstractSyncAdapter implements AdapterInterface
             return $this->fileDescriptors[$id]->rpc(Factory::rpc('open', [
                 'path' => $path,
                 'flags' => $flags,
-                'mode' => $mode,
+                'mode' => decoct($this->permissionFlagResolver->resolve($mode)),
             ]));
         })->then(function () use ($path, $flags, &$id) {
             return \React\Promise\resolve(StreamFactory::create($path, $id, $flags, $this));
