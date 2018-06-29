@@ -150,7 +150,7 @@ trait WoolTrait
         if (!file_exists($payload['path'])) {
             touch($payload['path']);
             $umask = umask();
-            chmod($payload['path'], (octdec($payload['mode']) & ~$umask));
+            chmod($payload['path'], (decoct($payload['mode']) & ~$umask));
         }
         $this->fd = @fopen($payload['path'], $payload['flags']);
         return \React\Promise\resolve([
