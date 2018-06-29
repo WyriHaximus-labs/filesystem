@@ -69,8 +69,6 @@ class DirectoryTest extends AbstractAdaptersTest
      */
     public function testCreate(LoopInterface $loop, FilesystemInterface $filesystem)
     {
-        $defaultCreationMode = (new PermissionFlagResolver())->resolve(AdapterInterface::CREATION_MODE);
-        $umask = umask();
         $dir = $this->tmpDir . 'path';
         $this->await($filesystem->dir($dir)->createRecursive(), $loop);
         $this->assertFileExists($dir);
