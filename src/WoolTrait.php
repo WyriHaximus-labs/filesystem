@@ -17,7 +17,7 @@ trait WoolTrait
         if (
             @mkdir(
                 $payload['path'],
-                octdec($payload['mode'])
+                (new PermissionFlagResolver())->resolve($payload['mode'])
             )
         ) {
             return \React\Promise\resolve([]);
@@ -150,8 +150,7 @@ trait WoolTrait
         if (!file_exists($payload['path'])) {
             touch($payload['path']);
             $umask = umask();
-            //chmod($payload['path'], (decoct($payload['mode']) & ~$umask));
-            chmod($payload['path'], 0760);
+            chmod($payload['path'], (new PermissionFlagResolver())->resolve($payload['mode']));
         }
         $this->fd = @fopen($payload['path'], $payload['flags']);
         return \React\Promise\resolve([
