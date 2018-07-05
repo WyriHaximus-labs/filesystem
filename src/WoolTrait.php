@@ -149,7 +149,13 @@ trait WoolTrait
     {
         if (!file_exists($payload['path'])) {
             touch($payload['path']);
-            $umask = umask();
+            $time = time();
+            do {
+                usleep(500);
+                if ($time + 3 > time() || file_exists($payload['path'])) {
+                    break;
+                }
+            } while (!file_exists($payload['path']));
             chmod($payload['path'], (new PermissionFlagResolver())->resolve($payload['mode']));
         }
         $this->fd = @fopen($payload['path'], $payload['flags']);
