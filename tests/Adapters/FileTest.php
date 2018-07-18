@@ -153,6 +153,7 @@ class FileTest extends AbstractAdaptersTest
 
     /**
      * @dataProvider filesystemProvider
+     * @group permissions
      */
     public function testCopy(LoopInterface $loop, FilesystemInterface $filesystem)
     {
@@ -172,6 +173,7 @@ class FileTest extends AbstractAdaptersTest
 
     /**
      * @dataProvider filesystemProvider
+     * @group permissions
      */
     public function testCopyToDirectory(LoopInterface $loop, FilesystemInterface $filesystem)
     {
