@@ -2,84 +2,35 @@
 
 namespace React\Tests\Filesystem;
 
-use React\Filesystem\Filesystem;
-use React\Promise\FulfilledPromise;
-use React\Promise\RejectedPromise;
+use React\EventLoop\LoopInterface;
+use React\Filesystem\FilesystemInterface;
+use React\Filesystem\Node\DirectoryInterface;
+use React\Filesystem\Node\FileInterface;
+use function Clue\React\Block\await;
 
-class FilesystemTest extends TestCase
+final class FilesystemTest extends AbstractFilesystemTestCase
 {
-    public function testCreate()
+    /**
+     * @test
+     *
+     * @dataProvider provideFilesystems
+     */
+    function file(FilesystemInterface $filesystem, LoopInterface $loop): void
     {
-        $this->assertInstanceOf(
-            'React\Filesystem\Filesystem',
-            Filesystem::create($this->getMock('React\EventLoop\LoopInterface'), [
-                'pool' => [
-                    'class' => 'WyriHaximus\React\ChildProcess\Pool\Pool\Dummy',
-                ],
-            ])
-        );
-    }
-    public function testCreateWithAdapter()
-    {
-        $this->assertInstanceOf(
-            'React\Filesystem\Filesystem',
-            Filesystem::createFromAdapter($this->mockAdapter())
-        );
+        $node = await($filesystem->detect(__FILE__), $loop, 30);
+
+        self::assertInstanceOf(FileInterface::class, $node);
     }
 
-    public function testFactory()
+    /**
+     * @test
+     *
+     * @dataProvider provideFilesystems
+     */
+    function directory(FilesystemInterface $filesystem, LoopInterface $loop): void
     {
-        try {
-            $this->assertInstanceOf('React\Filesystem\Filesystem', Filesystem::create(null, [
-                'pool' => [
-                    'class' => 'WyriHaximus\React\ChildProcess\Pool\Pool\Dummy',
-                ],
-            ]));
-        } catch (\PHPUnit_Framework_Error $typeError) {
-            $this->assertTrue(true);
-        } catch (\TypeError $typeError) {
-            $this->assertTrue(true);
-        }
-    }
+        $node = await($filesystem->detect(__DIR__), $loop, 30);
 
-    public function testFile()
-    {
-        $file = Filesystem::create($this->getMock('React\EventLoop\LoopInterface'), [
-            'pool' => [
-                'class' => 'WyriHaximus\React\ChildProcess\Pool\Pool\Dummy',
-            ],
-        ])->file('foo.bar');
-        $this->assertInstanceOf('React\Filesystem\Node\File', $file);
-        $this->assertInstanceOf('React\Filesystem\Node\GenericOperationInterface', $file);
-    }
-
-    public function testDir()
-    {
-        $directory = Filesystem::create($this->getMock('React\EventLoop\LoopInterface'), [
-            'pool' => [
-                'class' => 'WyriHaximus\React\ChildProcess\Pool\Pool\Dummy',
-            ],
-        ])->dir('foo.bar');
-        $this->assertInstanceOf('React\Filesystem\Node\Directory', $directory);
-        $this->assertInstanceOf('React\Filesystem\Node\GenericOperationInterface', $directory);
-    }
-
-    public function testGetContents()
-    {
-        $adapter = $this->mockAdapter();
-        $adapter
-            ->expects($this->any())
-            ->method('stat')
-            ->will($this->returnValue(new FulfilledPromise([])))
-        ;
-        $adapter
-            ->expects($this->any())
-            ->method('open')
-            ->will($this->returnValue(new RejectedPromise()))
-        ;
-        $this->assertInstanceOf(
-            'React\Promise\PromiseInterface',
-            Filesystem::createFromAdapter($adapter)->getContents('foo.bar')
-        );
+        self::assertInstanceOf(DirectoryInterface::class, $node);
     }
 }

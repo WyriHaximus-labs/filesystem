@@ -2,64 +2,18 @@
 
 namespace React\Filesystem;
 
-use RuntimeException;
-use React\EventLoop\LoopInterface;
 use React\Filesystem\Node;
+use React\Promise\PromiseInterface;
 
 interface FilesystemInterface
 {
-    /**
-     * @param LoopInterface $loop
-     * @param array $options
-     * @return FilesystemInterface
-     * @throws RuntimeException
-     */
-    public static function create(LoopInterface $loop, array $options = []);
+    public function file(string $filename): Node\FileInterface;
 
-    /**
-     * @param AdapterInterface $adapter
-     * @return static
-     */
-    public static function createFromAdapter(AdapterInterface $adapter);
-
-    /**
-     * @return string[]
-     */
-    public static function getSupportedAdapters();
-
-    /**
-     * @return AdapterInterface
-     */
-    public function getAdapter();
-
-    /**
-     * @param string $filename
-     * @return Node\FileInterface
-     */
-    public function file($filename);
+    public function directory(string $path): Node\DirectoryInterface;
 
     /**
      * @param string $path
-     * @return Node\DirectoryInterface
+     * @return PromiseInterface<Node\NodeInterface>
      */
-    public function dir($path);
-
-    /**
-     * @param string $path
-     * @param Node\NodeInterface $destination
-     * @return Node\LinkInterface
-     */
-    public function link($path, Node\NodeInterface $destination);
-
-    /**
-     * @param string $path
-     * @return \React\Promise\PromiseInterface
-     */
-    public function constructLink($path);
-
-    /**
-     * @param string $filename
-     * @return \React\Promise\PromiseInterface
-     */
-    public function getContents($filename);
+    public function detect(string $path): PromiseInterface;
 }
